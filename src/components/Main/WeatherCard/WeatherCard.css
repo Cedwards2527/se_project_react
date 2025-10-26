@@ -1,9 +1,11 @@
 .weather-card {
+  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
   position: relative;
   display: flex;
   height: 80px;
   border-radius: 12px;
   overflow: hidden;
+  padding-bottom: 40px;
 }
 
 .weather-card__temp {
