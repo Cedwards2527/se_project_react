@@ -51,6 +51,9 @@ function ModalWithForm() {
               Cold
             </label>
           </fieldset>
+          <button type="submit" className="modal__submit">
+            Add garment
+          </button>
         </form>
       </div>
     </div>

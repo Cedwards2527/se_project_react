@@ -1,1 +1,44 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.modal__title {
+  margin: 0;
+}
+.modal__close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+}
+.modal__content {
+  max-width: 496px;
+  width: 100%git;
+  box-sizing: border-box;
+  position: relative;
+  background-color: #fff;
+  padding: 28px 28px 36px;
+}
+
+.modal__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.modal__input {
+  display: block;
+}
+
+.modal__radio-buttons {
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
