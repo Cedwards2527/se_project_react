@@ -1,0 +1,22 @@
+.modal__content_type_image {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.modal__close-button {
+  color: #fff;
+}
+
+.modal__image {
+  width: 100%;
+  flex-grow: 1;
+  object-fit: cover;
+  object-position: top;
+}
+
+.modal__footer {
+  padding: 20px;
+  flex-shrink: 0;
+}

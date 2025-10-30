@@ -12,10 +12,6 @@ function WeatherCard({ weatherData }) {
     );
   });
 
-  console.log("Weather data:", weatherData);
-  console.log("Filter options:", filterOptions);
-  console.log("Using default?", filterOptions.length === 0);
-
   let weatherOption;
   if (filterOptions.length === 0) {
     weatherOption = defaultWeatherOptions[weatherData.isDay ? "day" : "night"];
