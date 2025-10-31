@@ -29,13 +29,6 @@ Cold: below 66°F
 -OpenWeatherMap API for real-time weather info
 -Cabinet Grotesk font
 -ESLint to keep the code organized
--How to Run It
--You’ll Need
--Node.js (v14 or newer)
--npm or yarn
--An API key from OpenWeatherMap
--Steps
--Clone the repo
 
 ## Notes
 
