@@ -7,6 +7,7 @@
 
 .modal__close-button {
   color: #fff;
+  cursor: pointer;
 }
 
 .modal__image {

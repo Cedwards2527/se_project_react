@@ -10,11 +10,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
 }
 
 .modal_opened {
+  opacity: 1;
   visibility: visible;
-  transition: smooth 1s;
 }
 
 .modal__title {
@@ -29,6 +32,7 @@
   right: 28px;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 .modal__content {
   max-width: 496px;
@@ -77,6 +81,9 @@
   accent-color: #000;
   color: rgba(0, 0, 0, 0.5);
 }
+.modal__label_type_radio {
+  cursor: pointer;
+}
 .modal__label_type_radio:has(input:checked) {
   color: #000;
 }
@@ -94,6 +101,7 @@
   font-size: 16px;
   line-height: 20px;
   border: none;
+  cursor: pointer;
 }
 
 .modal__submit:hover {
