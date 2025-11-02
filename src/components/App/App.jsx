@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     const handleEscape = (evt) => {
       if (evt.key === "Escape") {
-        setActiveModal("");
+        closeActiveModal();
       }
     };
     document.addEventListener("keydown", handleEscape);
