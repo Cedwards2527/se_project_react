@@ -54,15 +54,18 @@
 }
 
 .modal__input {
-  width: 435px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  width: 100%;
   display: block;
   border: none;
-  margin-top: 32px;
+  margin-top: 8pxpx;
   border-bottom: 1px solid #000;
 }
 
 .modal__legend {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   color: #000;
 }
 
@@ -91,7 +94,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 24px;
   max-width: 124px;
   background-color: #000;
   color: #fff;
