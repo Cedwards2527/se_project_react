@@ -8,16 +8,18 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     weatherType: "",
   };
   const { values, handleChange } = useForm(defaultValues);
-  function handleSubmit(evt) {}
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onAddItem(values);
+  }
 
   return (
     <ModalWithForm
       title="New garment"
       name="new-card"
-      buttonText="Add garment"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={onAddItem}
+      onSubmit={handleSubmit}
     >
       <label className="modal__label">
         Name{" "}

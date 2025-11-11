@@ -1,7 +1,7 @@
 .modal__content_type_image {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 0 !important;
   overflow: hidden;
 }
 

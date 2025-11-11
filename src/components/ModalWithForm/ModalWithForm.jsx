@@ -1,7 +1,15 @@
 import "./ModalWithForm.css";
 import close from "../../assets/close.svg";
 
-function ModalWithForm({ children, buttonText, title, isOpen, onClose }) {
+const ModalWithForm = ({
+  title,
+  name,
+  buttonText = "Add garment",
+  isOpen,
+  onClose,
+  children,
+  onSubmit,
+}) => {
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`} onClick={onClose}>
       <div className="modal__content" onClick={(e) => e.stopPropagation()}>
@@ -9,7 +17,7 @@ function ModalWithForm({ children, buttonText, title, isOpen, onClose }) {
         <button onClick={onClose} type="button" className="modal__close">
           <img src={close} alt="close" />
         </button>
-        <form className="modal__form">
+        <form onSubmit={onSubmit} className="modal__form" name={name}>
           {children}
           <button type="submit" className="modal__submit">
             {buttonText}
@@ -18,6 +26,6 @@ function ModalWithForm({ children, buttonText, title, isOpen, onClose }) {
       </div>
     </div>
   );
-}
+};
 
 export default ModalWithForm;
