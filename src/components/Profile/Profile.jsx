@@ -4,7 +4,7 @@ import "./Profile.css";
 
 export default function Profile() {
   return (
-    <section>
+    <section className="profile">
       <SideBar />
       <ClothesSection />
     </section>
