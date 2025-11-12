@@ -1,0 +1,22 @@
+.sidbar {
+  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+}
+
+.sidebar__user-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 16px;
+}
+
+.sidebar__avatar {
+  height: 56px;
+}
+
+.sidebar__username {
+  margin: 0;
+  line-height: 100%;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
