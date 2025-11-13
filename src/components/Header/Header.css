@@ -42,3 +42,9 @@
   margin: 0;
   line-height: 100%;
 }
+
+.header__nav-link {
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
