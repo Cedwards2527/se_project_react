@@ -1,8 +1,16 @@
+.modal {
+  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+
 .modal__content_type_image {
   display: flex;
   flex-direction: column;
   padding: 0 !important;
   overflow: hidden;
+  position: relative;
 }
 
 .modal__close-button {
@@ -20,4 +28,14 @@
 .modal__footer {
   padding: 20px;
   flex-shrink: 0;
+}
+
+.modal__delete-button {
+  border: none;
+  position: absolute;
+  background-color: transparent;
+  bottom: 73px;
+  right: 20px;
+  font-size: 24px;
+  color: #ff4d00;
 }
