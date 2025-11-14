@@ -11,6 +11,7 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import { getItems } from "../../utils/api";
+import { addItem } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -41,11 +42,16 @@ function App() {
   const onAddItem = (inputValues) => {
     const newCardData = {
       name: inputValues.name,
-      link: inputValues.link,
+      imageUrl: inputValues.link,
       weather: inputValues.weatherType,
     };
-    setClothingItems([...clothingItems, newCardData]);
-    closeActiveModal();
+
+    addItem(newCardData)
+      .then((data) => {
+        setClothingItems([...clothingItems, data]);
+        closeActiveModal();
+      })
+      .catch(console.error);
   };
 
   const closeActiveModal = () => {

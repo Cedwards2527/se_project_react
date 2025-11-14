@@ -12,7 +12,7 @@ export const getItems = () =>
   fetch(`${baseUrl}/items`, { headers }).then(handleServerResponse);
 
 export const addItem = ({ name, imageUrl, weather }) => {
-  return this._request(`${this._baseUrl}/items`, {
+  return fetch(`${baseUrl}/items`, {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -24,7 +24,7 @@ export const addItem = ({ name, imageUrl, weather }) => {
 };
 
 export const deleteItems = (itemID) => {
-  return fetch(`${this._baseUrl}/items/${itemID}`, {
+  return fetch(`${baseUrl}/items/${itemID}`, {
     method: "DELETE",
     headers,
   }).then(handleServerResponse);
