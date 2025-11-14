@@ -48,7 +48,7 @@ function App() {
 
     addItem(newCardData)
       .then((data) => {
-        setClothingItems([...clothingItems, data]);
+        setClothingItems([data, ...clothingItems]);
         closeActiveModal();
       })
       .catch(console.error);
@@ -68,10 +68,18 @@ function App() {
 
     getItems()
       .then((data) => {
-        setClothingItems(data);
+        setClothingItems(data.toReversed());
       })
       .catch(console.error);
   }, []);
+  // TODO
+  // -Add a delete button to the preview modal
+  // -declare a handler in App.jsx (deleteItemHandler)
+  // pass handler to preview modal
+  // inside priview modal pass the ID as the an argument to he handler (HINT: VIDEO 9 AT 19:00 (use handeler pattern found in ItemCard))
+  // Iside handler call removeItem function, pass it the ID
+  // in the .then() remove item from the array
+  // how? filter
 
   useEffect(() => {
     const handleEscape = (evt) => {
