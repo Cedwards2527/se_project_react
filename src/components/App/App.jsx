@@ -8,9 +8,10 @@ import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
 import ItemModal from "../ItemModal/ItemModal";
 import AddItemModal from "../AddItemModal/AddItemModal";
+import DeleteModal from "../DeleteModal/DeleteModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
-import { getItems } from "../../utils/api";
+import { deleteItems, getItems } from "../../utils/api";
 import { addItem } from "../../utils/api";
 
 function App() {
@@ -39,10 +40,14 @@ function App() {
     setActiveModal("add-garment");
   };
 
+  const handleDeleteModalOpen = () => {
+    setActiveModal("delete");
+  };
+
   const onAddItem = (inputValues) => {
     const newCardData = {
       name: inputValues.name,
-      imageUrl: inputValues.link,
+      imageUrl: inputValues.imageUrl,
       weather: inputValues.weatherType,
     };
 
@@ -72,14 +77,19 @@ function App() {
       })
       .catch(console.error);
   }, []);
-  // TODO
-  // -Add a delete button to the preview modal
-  // -declare a handler in App.jsx (deleteItemHandler)
-  // pass handler to preview modal
-  // inside priview modal pass the ID as the an argument to he handler (HINT: VIDEO 9 AT 19:00 (use handeler pattern found in ItemCard))
-  // Iside handler call removeItem function, pass it the ID
-  // in the .then() remove item from the array
-  // how? filter
+
+  const handleDeleteItem = (itemID) => {
+    deleteItems(itemID)
+      .then(() => {
+        setClothingItems(
+          clothingItems.filter((item) => {
+            return item.id !== itemID;
+          })
+        );
+        closeActiveModal();
+      })
+      .catch(console.error);
+  };
 
   useEffect(() => {
     const handleEscape = (evt) => {
@@ -132,7 +142,15 @@ function App() {
         <ItemModal
           isOpen={activeModal === "preview"}
           card={selectedCard}
+          onDeleteClick={handleDeleteModalOpen}
           onClose={closeActiveModal}
+          handleDeleteModalOpen={handleDeleteModalOpen}
+        />
+        <DeleteModal
+          isOpen={activeModal === "delete"}
+          onClose={closeActiveModal}
+          card={selectedCard}
+          handleDeleteItem={handleDeleteItem}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>

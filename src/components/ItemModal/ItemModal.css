@@ -1,10 +1,18 @@
 .modal {
   font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 24px;
+  position: fixed;
+  background-color: #00000080;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
 }
-
+.modal_opened {
+  opacity: 1;
+  visibility: visible;
+}
 .modal__content_type_image {
   display: flex;
   flex-direction: column;
@@ -19,8 +27,9 @@
 }
 
 .modal__image {
+  height: 420px;
   width: 100%;
-  flex-grow: 1;
+
   object-fit: cover;
   object-position: top;
 }
@@ -38,4 +47,5 @@
   right: 20px;
   font-size: 24px;
   color: #ff4d00;
+  cursor: pointer;
 }
