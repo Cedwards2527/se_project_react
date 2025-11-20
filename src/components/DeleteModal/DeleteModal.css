@@ -64,7 +64,18 @@
   padding-bottom: 20px;
 }
 
+.mobal__button_type_delete:hover {
+  opacity: 20%;
+}
+
 .mobal__btn_type_cancel {
   margin: 0;
   font-weight: 700;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mobal__btn_type_cancel:hover {
+  opacity: 20%;
 }

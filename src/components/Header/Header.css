@@ -32,6 +32,10 @@
   cursor: pointer;
 }
 
+.header__add-clothes-btn:hover {
+  opacity: 20%;
+}
+
 .header__user-container {
   display: flex;
   align-items: center;
