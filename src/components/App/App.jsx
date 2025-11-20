@@ -44,7 +44,7 @@ function App() {
     setActiveModal("delete");
   };
 
-  const onAddItem = (inputValues) => {
+  const onAddItem = (inputValues, resetForm) => {
     const newCardData = {
       name: inputValues.name,
       imageUrl: inputValues.imageUrl,
@@ -54,8 +54,8 @@ function App() {
     addItem(newCardData)
       .then((data) => {
         setClothingItems([data, ...clothingItems]);
-
         closeActiveModal();
+        resetForm();
       })
       .catch(console.error);
   };
@@ -67,8 +67,8 @@ function App() {
   useEffect(() => {
     getWeather(coordinates, apiKey)
       .then((data) => {
-        const filterData = filterWeatherData(data);
-        setWeatherData(filterData);
+        const filteredData = filterWeatherData(data);
+        setWeatherData(filteredData);
       })
       .catch(console.error);
 
@@ -84,7 +84,7 @@ function App() {
       .then(() => {
         setClothingItems(
           clothingItems.filter((item) => {
-            return item.id !== itemID;
+            return item._id !== itemID;
           })
         );
         closeActiveModal();
