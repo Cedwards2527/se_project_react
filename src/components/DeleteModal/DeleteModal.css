@@ -50,14 +50,14 @@
   gap: 12px;
 }
 
-.modal__btn {
+.modal__button {
   margin: 0;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
-.mobal__btn_type_delete {
+.mobal__button_type_delete {
   color: #ff4d00;
   margin: 0;
   font-weight: 700;

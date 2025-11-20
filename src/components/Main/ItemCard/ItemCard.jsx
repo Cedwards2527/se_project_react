@@ -1,11 +1,6 @@
 import "./ItemCard.css";
 
 function ItemCard({ item, onCardClick }) {
-  console.log(
-    "ItemCard received onCardClick:",
-    typeof onCardClick,
-    onCardClick
-  );
   const handleCardClick = () => {
     onCardClick(item);
   };
