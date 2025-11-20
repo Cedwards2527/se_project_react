@@ -19,7 +19,7 @@ function DeleteModal({ isOpen, onClose, card, handleDeleteItem }) {
         <div className="modal__buttons" id="delete-form">
           <button
             type="button"
-            onClick={() => handleDeleteItem(card._id)}
+            onClick={() => handleDeleteItem(card.id)}
             aria-label="Delete image"
             className="modal__button mobal__button_type_delete"
           >

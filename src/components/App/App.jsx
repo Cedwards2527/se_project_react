@@ -84,7 +84,7 @@ function App() {
       .then(() => {
         setClothingItems(
           clothingItems.filter((item) => {
-            return item._id !== itemID;
+            return item.id !== itemID;
           })
         );
         closeActiveModal();

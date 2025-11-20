@@ -6,6 +6,8 @@ import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitC
 
 function Main({ weatherData, handleCardClick, clothingItems }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  // Debug: log clothingItems to check for duplicate ids
+  console.log("clothingItems:", clothingItems);
   return (
     <main className="main">
       <WeatherCard weatherData={weatherData} />
@@ -22,7 +24,7 @@ function Main({ weatherData, handleCardClick, clothingItems }) {
             .map((item) => {
               return (
                 <ItemCard
-                  key={item._id}
+                  key={item.id}
                   item={item}
                   onCardClick={handleCardClick}
                 />
