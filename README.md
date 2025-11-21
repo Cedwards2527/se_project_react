@@ -33,3 +33,8 @@ Cold: below 66°F
 ## Notes
 
 I built this project during my software engineering bootcamp as a way to practice React, APIs, and responsive design. I learned a lot about components, props, and managing state while building it.
+
+## Project Pitch Video
+
+Check out [this video](https://drive.google.com/file/d/1hKrmsVLkcc6-uekE0fOWdf2gWtk1UJHZ/view?usp=drive_link), where I describe my
+project and some challenges I faced while building it.
