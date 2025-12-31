@@ -71,9 +71,9 @@ export const defaultWeatherOptions = {
   },
 };
 
-export const coordinates = {
+/*export const coordinates = {
   latitude: 33.42712463575017,
   longitude: -81.86270537755044,
-};
+}; */
 
 export const apiKey = "3b4c9bc8c59b56775eb883a2a85d3bf4";

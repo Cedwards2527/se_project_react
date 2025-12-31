@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
-import { coordinates, apiKey } from "../../utils/constants";
+import { apiKey } from "../../utils/constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile";
@@ -27,6 +27,32 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      // Fallback: handle if geolocation is not supported
+      console.error("Geolocation is not supported by this browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        getWeather(coords, apiKey)
+          .then((data) => {
+            setWeatherData(filterWeatherData(data));
+          })
+          .catch(console.error);
+      },
+      (error) => {
+        // Handle error or fallback to default location if desired
+        console.error("Error getting geolocation:", error);
+      }
+    );
+  }, []);
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -65,7 +91,7 @@ function App() {
   };
 
   useEffect(() => {
-    getWeather(coordinates, apiKey)
+    getWeather(apiKey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
