@@ -11,46 +11,77 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
-import { deleteItems, getItems } from "../../utils/api";
-import { addItem } from "../../utils/api";
+import { deleteItems, getItems, addItem } from "../../utils/api";
+import RegisterModal from "../RegisterModal/RegisterModal";
+
+window.addEventListener("error", (e) => {
+  if (
+    e.filename?.includes("installHook.js") &&
+    e.message.includes("Unexpected token '<'")
+  ) {
+    e.stopImmediatePropagation();
+    return false;
+  }
+});
 
 function App() {
   const [weatherData, setWeatherData] = useState({
-    type: "",
-    temp: { F: 999, C: 999 },
-    city: "",
-    condition: "",
-    isDay: false,
+    type: "clear",
+    temp: { F: 72, C: 22 },
+    city: "Unknown",
+    condition: "clear",
+    isDay: true,
+    iconUrl: "/assets/day/default.svg",
   });
 
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
+  const openRegisterModal = () => setIsRegisterModalOpen(true);
+  const closeRegisterModal = () => setIsRegisterModalOpen(false);
+
+  const handleRegistration = (data) => {
+    console.log("Registering user:", data);
+    closeRegisterModal();
+  };
+
   useEffect(() => {
-    if (!navigator.geolocation) {
-      // Fallback: handle if geolocation is not supported
-      console.error("Geolocation is not supported by this browser.");
-      return;
+    const fetchWeather = (coords) => {
+      getWeather(coords, apiKey)
+        .then((data) => {
+          const filtered = filterWeatherData(data);
+          setWeatherData(filtered);
+        })
+        .catch(console.error);
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          fetchWeather({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+
+          fetchWeather({ latitude: 33.4271, longitude: -81.8627 });
+        },
+      );
+    } else {
+      console.error("Geolocation not supported");
+      fetchWeather({ latitude: 33.4271, longitude: -81.8627 });
     }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const coords = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        getWeather(coords, apiKey)
-          .then((data) => {
-            setWeatherData(filterWeatherData(data));
-          })
-          .catch(console.error);
-      },
-      (error) => {
-        // Handle error or fallback to default location if desired
-        console.error("Error getting geolocation:", error);
-      }
-    );
+
+    getItems()
+      .then(({ data }) =>
+        setClothingItems(Array.isArray(data) ? data.reverse() : []),
+      )
+      .catch(console.error);
   }, []);
 
   const handleCardClick = (card) => {
@@ -58,26 +89,19 @@ function App() {
     setActiveModal("preview");
   };
 
-  const handleToggleSwitchChange = () => {
-    setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
-  };
+  const handleToggleSwitchChange = () =>
+    setCurrentTemperatureUnit((unit) => (unit === "F" ? "C" : "F"));
 
-  const handleAddClick = () => {
-    setActiveModal("add-garment");
-  };
-
-  const handleDeleteModalOpen = () => {
-    setActiveModal("delete");
-  };
+  const handleAddClick = () => setActiveModal("add-garment");
+  const handleDeleteModalOpen = () => setActiveModal("delete");
+  const closeActiveModal = () => setActiveModal("");
 
   const onAddItem = (inputValues, resetForm) => {
-    const newCardData = {
+    addItem({
       name: inputValues.name,
       imageUrl: inputValues.imageUrl,
       weather: inputValues.weatherType,
-    };
-
-    addItem(newCardData)
+    })
       .then((data) => {
         setClothingItems([data, ...clothingItems]);
         closeActiveModal();
@@ -86,33 +110,10 @@ function App() {
       .catch(console.error);
   };
 
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
-
-  useEffect(() => {
-    getWeather(apiKey)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
-      })
-      .catch(console.error);
-
-    getItems()
-      .then((data) => {
-        setClothingItems(data.toReversed());
-      })
-      .catch(console.error);
-  }, []);
-
   const handleDeleteItem = (itemID) => {
     deleteItems(itemID)
       .then(() => {
-        setClothingItems(
-          clothingItems.filter((item) => {
-            return item.id !== itemID;
-          })
-        );
+        setClothingItems(clothingItems.filter((item) => item.id !== itemID));
         closeActiveModal();
       })
       .catch(console.error);
@@ -120,9 +121,7 @@ function App() {
 
   useEffect(() => {
     const handleEscape = (evt) => {
-      if (evt.key === "Escape") {
-        closeActiveModal();
-      }
+      if (evt.key === "Escape") closeActiveModal();
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
@@ -134,7 +133,13 @@ function App() {
     >
       <div className="page">
         <div className="page__content">
-          <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+          <Header
+            handleAddClick={handleAddClick}
+            weatherData={weatherData}
+            isLoggedIn={false}
+            openRegisterModal={openRegisterModal}
+            openLoginModal={() => {}}
+          />
           <Routes>
             <Route
               path="/"
@@ -159,7 +164,6 @@ function App() {
           </Routes>
         </div>
         <Footer />
-
         <AddItemModal
           buttonText="Add garment"
           isOpen={activeModal === "add-garment"}
@@ -178,6 +182,12 @@ function App() {
           onClose={closeActiveModal}
           card={selectedCard}
           handleDeleteItem={handleDeleteItem}
+        />
+
+        <RegisterModal
+          isOpen={isRegisterModalOpen}
+          onClose={closeRegisterModal}
+          handleRegistration={handleRegistration}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>
