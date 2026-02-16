@@ -39,12 +39,18 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+   const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openRegisterModal = () => setIsRegisterModalOpen(true);
   const closeRegisterModal = () => setIsRegisterModalOpen(false);
 
   const handleRegistration = (data) => {
-    console.log("Registering user:", data);
+    setUser({
+      name: data.username,
+      avatar: data.avatarUrl,
+    })
+    setIsLoggedIn(true);
     closeRegisterModal();
   };
 
@@ -136,7 +142,8 @@ function App() {
           <Header
             handleAddClick={handleAddClick}
             weatherData={weatherData}
-            isLoggedIn={false}
+            isLoggedIn={isLoggedIn}
+            currentUser={user}
             openRegisterModal={openRegisterModal}
             openLoginModal={() => {}}
           />
