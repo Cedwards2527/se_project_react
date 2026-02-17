@@ -45,6 +45,8 @@ function App() {
   const openRegisterModal = () => setIsRegisterModalOpen(true);
   const closeRegisterModal = () => setIsRegisterModalOpen(false);
 
+ 
+
   const handleRegistration = (data) => {
     setUser({
       name: data.username,
