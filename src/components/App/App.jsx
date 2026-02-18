@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate,useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 import { apiKey } from "../../utils/constants";
@@ -9,10 +9,13 @@ import Footer from "../Footer/Footer";
 import ItemModal from "../ItemModal/ItemModal";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import DeleteModal from "../DeleteModal/DeleteModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import LoginModal from "../LoginModal/LoginModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import { deleteItems, getItems, addItem } from "../../utils/api";
-import RegisterModal from "../RegisterModal/RegisterModal";
+
+//import * as auth from "../../utils/auth";
 
 window.addEventListener("error", (e) => {
   if (
@@ -34,7 +37,7 @@ function App() {
     iconUrl: "/assets/day/default.svg",
   });
 
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
   const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
@@ -42,19 +45,44 @@ function App() {
    const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const openRegisterModal = () => setIsRegisterModalOpen(true);
-  const closeRegisterModal = () => setIsRegisterModalOpen(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
- 
 
-  const handleRegistration = (data) => {
-    setUser({
-      name: data.username,
-      avatar: data.avatarUrl,
+  const handleRegistration = ({ email, username, password, avatarUrl, confirmPassword }) => {
+  if (password === confirmPassword) {
+    auth.register(username, password, email, avatarUrl)
+      .then((res) => {
+       if(res.token){
+        localStorage.setItem("jwt", res.token);
+        setUser(res.user)
+        setIsLoggedIn(true);
+        closeActiveModal();
+        navigate("/login");
+       }
+      })
+      .catch(console.error);
+      }
+    };
+   
+
+  const handleLogin = ({email, password}) => {
+    if (!email || !password){
+      return;
+    }
+    auth.authorize(email, password)
+    .then((res) => {
+      if(res.token) {
+        localStorage.setItem("jwt", res.token)
+        setUser(res.user);
+        setIsLoggedIn(true);
+        const redirectPath = location.state?.pathname || "/";
+        navigate(redirectPath)
+      }
     })
-    setIsLoggedIn(true);
-    closeRegisterModal();
-  };
+    .catch(console.error);
+
+  }
 
   useEffect(() => {
     const fetchWeather = (coords) => {
@@ -146,8 +174,8 @@ function App() {
             weatherData={weatherData}
             isLoggedIn={isLoggedIn}
             currentUser={user}
-            openRegisterModal={openRegisterModal}
-            openLoginModal={() => {}}
+            openRegisterModal={() => setActiveModal("register")}
+            openLoginModal={() => setActiveModal("login")}
           />
           <Routes>
             <Route
@@ -194,9 +222,14 @@ function App() {
         />
 
         <RegisterModal
-          isOpen={isRegisterModalOpen}
-          onClose={closeRegisterModal}
+          isOpen={activeModal === "register"}
+          onClose={closeActiveModal}
           handleRegistration={handleRegistration}
+        />
+        <LoginModal
+        isOpen={activeModal === "login"}
+        onClose={closeActiveModal}
+        handleLogin={handleLogin}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>
