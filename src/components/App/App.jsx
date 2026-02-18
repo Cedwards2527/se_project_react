@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate,useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 import { apiKey } from "../../utils/constants";
+import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile";
@@ -15,7 +16,7 @@ import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import { deleteItems, getItems, addItem } from "../../utils/api";
 
-//import * as auth from "../../utils/auth";
+import * as auth from "../../utils/auth";
 
 window.addEventListener("error", (e) => {
   if (
@@ -47,18 +48,19 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  
 
 
-  const handleRegistration = ({ email, username, password, avatarUrl, confirmPassword }) => {
+  const handleRegistration = ({ email, name, password, avatar, confirmPassword }) => {
   if (password === confirmPassword) {
-    auth.register(username, password, email, avatarUrl)
+    auth.register(name, avatar, email, password)
       .then((res) => {
        if(res.token){
         localStorage.setItem("jwt", res.token);
         setUser(res.user)
         setIsLoggedIn(true);
         closeActiveModal();
-        navigate("/login");
+        navigate("/");
        }
       })
       .catch(console.error);
@@ -81,8 +83,7 @@ function App() {
       }
     })
     .catch(console.error);
-
-  }
+ };
 
   useEffect(() => {
     const fetchWeather = (coords) => {
@@ -191,11 +192,13 @@ function App() {
             <Route
               path="/profile"
               element={
-                <Profile
+                <ProtectedRoutes isLoggedIn={isLoggedIn}>
+                <Profile setIsLoggedIn={setIsLoggedIn}
                   clothingItems={clothingItems}
                   handleCardClick={handleCardClick}
                   handleAddClick={handleAddClick}
-                />
+                  />
+                  </ProtectedRoutes>
               }
             />
           </Routes>
