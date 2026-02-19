@@ -14,6 +14,7 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
+import CurrentUserContext from "../../context/CurrentUserContext";
 import { deleteItems, getItems, addItem } from "../../utils/api";
 
 import * as auth from "../../utils/auth";
@@ -43,7 +44,7 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-   const [user, setUser] = useState(null);
+   const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function App() {
       return auth.checkToken(res.token); 
     })
     .then((userData) => {
-      setUser(userData);
+      setCurrentUser(userData);
       setIsLoggedIn(true);
       closeActiveModal();
      const redirectPath = location.state?.pathname || "/";
@@ -79,7 +80,7 @@ function App() {
       return auth.checkToken(res.token); 
     })
     .then((userData) => {
-      setUser(userData);
+      setCurrentUser(userData);
       setIsLoggedIn(true);
       closeActiveModal();
     const redirectPath = location.state?.pathname || "/";
@@ -130,14 +131,14 @@ function App() {
  
     auth.checkToken(token)
     .then((userData) =>{
-      setUser(userData);
+      setCurrentUser(userData);
       setIsLoggedIn(true)
     })
     .catch((err) =>{
       console.error(err);
       localStorage.removeItem("jwt");
       setIsLoggedIn(false);
-      setUser(null);
+      setCurrentUser(null);
       navigate("/login");
     })
   }, [navigate]);
@@ -194,6 +195,7 @@ function App() {
   }, []);
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <CurrentTemperatureUnitContext.Provider
       value={{ currentTemperatureUnit, handleToggleSwitchChange }}
     >
@@ -203,7 +205,7 @@ function App() {
             handleAddClick={handleAddClick}
             weatherData={weatherData}
             isLoggedIn={isLoggedIn}
-            currentUser={user}
+            currentUser={currentUser}
             openRegisterModal={() => setActiveModal("register")}
             openLoginModal={() => setActiveModal("login")}
           />
@@ -265,6 +267,7 @@ function App() {
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>
+</CurrentUserContext.Provider>
   );
 }
 
