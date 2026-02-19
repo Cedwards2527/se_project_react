@@ -11,21 +11,28 @@ const handleServerResponse = (res) => {
 export const getItems = () =>
   fetch(`${BASE_URL}/items`, { headers }).then(handleServerResponse);
 
-export const addItem = ({ name, imageUrl, weather }) => {
+export const addItem = ({ name, imageUrl, weather }, token) => {
   return fetch(`${BASE_URL}/items`, {
     method: "POST",
-    headers,
+    headers:{
+     "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       name,
       imageUrl,
       weather,
+  
     }),
   }).then(handleServerResponse);
 };
 
-export const deleteItems = (itemID) => {
+export const deleteItems = (itemID, token) => {
   return fetch(`${BASE_URL}/items/${itemID}`, {
     method: "DELETE",
-    headers,
+    headers:{
+       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
   }).then(handleServerResponse);
 };

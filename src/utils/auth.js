@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:3001";
 
 export const register = (name, avatar, email, password) => {
-    return fetch (`${BASE_URL}/auth/local/register`, {
+    return fetch (`${BASE_URL}/signup`, {
     method:"POST",
     headers: {
         Accept: "application/json",
@@ -15,7 +15,7 @@ export const register = (name, avatar, email, password) => {
 };
 
 export const authorize = (email, password) => {
-    return fetch (`${BASE_URL}/auth/local/login`, {
+    return fetch (`${BASE_URL}/signin`, {
     method:"POST",
     headers: {
         Accept: "application/json",
@@ -29,7 +29,7 @@ export const authorize = (email, password) => {
 
 export const checkToken = (token) => {
     return fetch (`${BASE_URL}/users/me`,{
-method: "Get",
+method: "GET",
  headers: {
      "Content-Type": "application/json",
      authorization: `Bearer ${token}`,

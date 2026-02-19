@@ -4,10 +4,11 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
   const [data, setData] = useState({
     email: "",
-    username: "",
+    name: "",
     password: "",
-    avatarUrl: "",
-  });
+    avatar: "",
+  
+});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +24,8 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
   return (
     <ModalWithForm
       title="Register"
-      name="Sign up"
+      name="register"
+      buttonText="Sign Up"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onRegistration}
@@ -37,12 +39,12 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
         onChange={handleChange}
         required
       />
-      <label htmlFor="username">Username:</label>
+      <label htmlFor="name">Name:</label>
       <input
-        id="username"
-        name="username"
+        id="name"
+        name="name"
         type="text"
-        value={data.username}
+        value={data.name}
         onChange={handleChange}
         required
       />
@@ -55,12 +57,12 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
         onChange={handleChange}
         required
       />
-      <label htmlFor="avatarUrl">Avatar URL:</label>
+      <label htmlFor="avatar">Avatar URL:</label>
       <input
-        id="avatarUrl"
-        name="avatarUrl"
+        id="avatar"
+        name="avatar"
         type="url"
-        value={data.avatarUrl}
+        value={data.avatar}
         onChange={handleChange}
       />
     </ModalWithForm>

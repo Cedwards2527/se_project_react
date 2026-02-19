@@ -51,21 +51,22 @@ function App() {
   
 
 
-  const handleRegistration = ({ email, name, password, avatar, confirmPassword }) => {
-  if (password === confirmPassword) {
-    auth.register(name, avatar, email, password)
-      .then((res) => {
-       if(res.token){
-        localStorage.setItem("jwt", res.token);
-        setUser(res.user)
-        setIsLoggedIn(true);
-        closeActiveModal();
-        navigate("/");
-       }
-      })
-      .catch(console.error);
-      }
-    };
+  const handleRegistration = ({ email, name, password, avatar}) => {
+  auth.register(name, avatar, email, password)
+    .then(() => auth.authorize(email, password))
+    .then((res) => {
+      localStorage.setItem("jwt", res.token);
+      return auth.checkToken(res.token); 
+    })
+    .then((userData) => {
+      setUser(userData);
+      setIsLoggedIn(true);
+      closeActiveModal();
+     const redirectPath = location.state?.pathname || "/";
+     navigate(redirectPath);
+    })
+    .catch(console.error);
+};
    
 
   const handleLogin = ({email, password}) => {
@@ -74,17 +75,19 @@ function App() {
     }
     auth.authorize(email, password)
     .then((res) => {
-      if(res.token) {
-        localStorage.setItem("jwt", res.token)
-        setUser(res.user);
-        setIsLoggedIn(true);
-        const redirectPath = location.state?.pathname || "/";
-        navigate(redirectPath)
-      }
+      localStorage.setItem("jwt", res.token);
+      return auth.checkToken(res.token); 
+    })
+    .then((userData) => {
+      setUser(userData);
+      setIsLoggedIn(true);
+      closeActiveModal();
+    const redirectPath = location.state?.pathname || "/";
+     navigate(redirectPath);
     })
     .catch(console.error);
- };
-
+};
+   
   useEffect(() => {
     const fetchWeather = (coords) => {
       getWeather(coords, apiKey)
@@ -121,6 +124,24 @@ function App() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if(!token) return;
+ 
+    auth.checkToken(token)
+    .then((userData) =>{
+      setUser(userData);
+      setIsLoggedIn(true)
+    })
+    .catch((err) =>{
+      console.error(err);
+      localStorage.removeItem("jwt");
+      setIsLoggedIn(false);
+      setUser(null);
+      navigate("/login");
+    })
+  }, [navigate]);
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -129,8 +150,14 @@ function App() {
   const handleToggleSwitchChange = () =>
     setCurrentTemperatureUnit((unit) => (unit === "F" ? "C" : "F"));
 
-  const handleAddClick = () => setActiveModal("add-garment");
-  const handleDeleteModalOpen = () => setActiveModal("delete");
+  const handleAddClick = () =>{ 
+    if(!isLoggedIn) return;
+    setActiveModal("add-garment");
+  }
+  const handleDeleteModalOpen = () =>{ 
+    if(!isLoggedIn) return;
+    setActiveModal("delete");
+  }
   const closeActiveModal = () => setActiveModal("");
 
   const onAddItem = (inputValues, resetForm) => {
@@ -138,7 +165,9 @@ function App() {
       name: inputValues.name,
       imageUrl: inputValues.imageUrl,
       weather: inputValues.weatherType,
-    })
+    },
+     localStorage.getItem("jwt"),
+  )
       .then((data) => {
         setClothingItems([data, ...clothingItems]);
         closeActiveModal();
@@ -148,7 +177,7 @@ function App() {
   };
 
   const handleDeleteItem = (itemID) => {
-    deleteItems(itemID)
+    deleteItems(itemID,  localStorage.getItem("jwt"))
       .then(() => {
         setClothingItems(clothingItems.filter((item) => item.id !== itemID));
         closeActiveModal();
