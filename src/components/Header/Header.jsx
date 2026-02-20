@@ -1,14 +1,14 @@
+import { useContext } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.svg";
-import avatar from "../../assets/avatar.svg";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { NavLink } from "react-router-dom";
+import CurrentUserContext from "../../context/CurrentUserContext";
 
 function Header({
   handleAddClick,
   weatherData,
   isLoggedIn,
-  currentUser,
   openLoginModal,
   openRegisterModal,
 }) {
@@ -16,6 +16,7 @@ function Header({
     month: "long",
     day: "numeric",
   });
+  const currentUser = useContext(CurrentUserContext);
   return (
     <header className="header">
       <NavLink to="/">
@@ -38,12 +39,18 @@ function Header({
             <NavLink className="header__nav-link" to="/profile">
               <div className="header__user-container">
                 <p className="header__username">{currentUser?.name}</p>
+                {currentUser?.avatar?(
                 <img
-                  src={currentUser?.avatar || avatar}
+                  src={currentUser.avatar} 
                   alt="user avatar"
                   className="header__avatar"
-                />
-              </div>
+                  />
+                ) : (
+                  <div className="header__avatar-placeholder">
+                    {currentUser?.name[0].toUpperCase()}
+                  </div>
+                )}
+                </div>
             </NavLink>
           </>
         ) : (

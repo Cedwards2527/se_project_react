@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate,useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import "./App.css";
 import { apiKey } from "../../utils/constants";
 import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
@@ -44,8 +44,8 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-   const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -180,7 +180,7 @@ function App() {
   const handleDeleteItem = (itemID) => {
     deleteItems(itemID,  localStorage.getItem("jwt"))
       .then(() => {
-        setClothingItems(clothingItems.filter((item) => item.id !== itemID));
+        setClothingItems(clothingItems.filter((item) => item._id !== itemID));
         closeActiveModal();
       })
       .catch(console.error);
@@ -205,7 +205,6 @@ function App() {
             handleAddClick={handleAddClick}
             weatherData={weatherData}
             isLoggedIn={isLoggedIn}
-            currentUser={currentUser}
             openRegisterModal={() => setActiveModal("register")}
             openLoginModal={() => setActiveModal("login")}
           />
