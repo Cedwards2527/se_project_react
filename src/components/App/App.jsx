@@ -12,10 +12,11 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import CurrentUserContext from "../../context/CurrentUserContext";
-import { deleteItems, getItems, addItem } from "../../utils/api";
+import { deleteItems, getItems, addItem, profileEdit } from "../../utils/api";
 
 import * as auth from "../../utils/auth";
 
@@ -46,6 +47,7 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -89,6 +91,18 @@ function App() {
     .catch(console.error);
 };
    
+const onProfileEdit = (inputValues) => {
+    profileEdit(
+      { name: inputValues.name, avatar: inputValues.avatar },  
+      localStorage.getItem("jwt")
+     )
+      .then((updatedUser) => {
+setCurrentUser(updatedUser);
+closeActiveModal();
+      })
+      .catch(console.error)
+    };
+    
   useEffect(() => {
     const fetchWeather = (coords) => {
       getWeather(coords, apiKey)
@@ -159,15 +173,20 @@ function App() {
     if(!isLoggedIn) return;
     setActiveModal("delete");
   }
+
+  const handleEditProfileModalOpen = () => {
+    if(!isLoggedIn) return;
+    setActiveModal("profile change");
+  }
   const closeActiveModal = () => setActiveModal("");
 
   const onAddItem = (inputValues, resetForm) => {
     addItem({
       name: inputValues.name,
       imageUrl: inputValues.imageUrl,
-      weather: inputValues.weatherType,
+      weather: inputValues.weatherType
     },
-     localStorage.getItem("jwt"),
+     localStorage.getItem("jwt")
   )
       .then((data) => {
         setClothingItems([data, ...clothingItems]);
@@ -264,6 +283,11 @@ function App() {
         onClose={closeActiveModal}
         handleLogin={handleLogin}
         />
+        <EditProfileModal
+      isOpen={activeModal === "profile change"}
+      onClose={closeActiveModal}
+      onUpdateUser={onProfileEdit}
+      />
       </div>
     </CurrentTemperatureUnitContext.Provider>
 </CurrentUserContext.Provider>

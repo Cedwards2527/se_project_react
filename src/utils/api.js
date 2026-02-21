@@ -27,6 +27,22 @@ export const addItem = ({ name, imageUrl, weather }, token) => {
   }).then(handleServerResponse);
 };
 
+export const profileEdit = ({ name, avatar, }, token) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "PATCH",
+    headers:{
+     "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      avatar,
+   
+  
+    }),
+  }).then(handleServerResponse);
+};
+
 export const deleteItems = (itemID, token) => {
   return fetch(`${BASE_URL}/items/${itemID}`, {
     method: "DELETE",

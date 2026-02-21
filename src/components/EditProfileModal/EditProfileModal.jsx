@@ -36,7 +36,7 @@ useEffect(() => {
     return (
        < ModalWithForm
        title="Change profile data"
-      name="Profile change"
+      name="profile change"
       buttonText="Save Change"
       isOpen={isOpen}
       onClose={onClose}
