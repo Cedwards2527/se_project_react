@@ -6,6 +6,8 @@ export default function Profile({
   clothingItems,
   handleCardClick,
   handleAddClick,
+  isLoggedIn,
+  handleSignOut
 }) {
   return (
     <section className="profile">
@@ -15,6 +17,7 @@ export default function Profile({
         handleCardClick={handleCardClick}
         handleAddClick={handleAddClick}
       />
+     {isLoggedIn &&  <button onClick={handleSignOut}>Sign Out</button>}
     </section>
   );
 }

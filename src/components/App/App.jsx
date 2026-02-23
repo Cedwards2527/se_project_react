@@ -1,7 +1,7 @@
 import { Routes, Route, useNavigate,useLocation } from "react-router-dom";
 import { useEffect, useState} from "react";
 import "./App.css";
-import { apiKey } from "../../utils/constants";
+import { apiKey} from "../../utils/constants";
 import ProtectedRoutes from "../ProtectedRoutes/ProtectedRoutes";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -16,7 +16,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import CurrentUserContext from "../../context/CurrentUserContext";
-import { deleteItems, getItems, addItem, profileEdit } from "../../utils/api";
+import { deleteItems, getItems, addItem, profileEdit, removeCardLike, addCardLike} from "../../utils/api";
 
 import * as auth from "../../utils/auth";
 
@@ -204,7 +204,31 @@ closeActiveModal();
       })
       .catch(console.error);
   };
+const handleCardLike = ({ id, isLiked }) => {
+  const token = localStorage.getItem("jwt");
 
+  const request = isLiked
+    ? removeCardLike(id, token)
+    : addCardLike(id, token);
+
+  request
+    .then((updatedCard) => {
+      setClothingItems((cards) =>
+        cards.map((item) =>
+          item._id === id ? updatedCard : item
+        )
+      );
+    })
+    .catch((err) => console.log(err));
+};
+
+const handleSignOut = () => {
+  localStorage.removeItem("jwt");
+  setIsLoggedIn(false);
+  setCurrentUser(null);
+  navigate("/");
+}
+  
   useEffect(() => {
     const handleEscape = (evt) => {
       if (evt.key === "Escape") closeActiveModal();
@@ -235,6 +259,7 @@ closeActiveModal();
                   weatherData={weatherData}
                   handleCardClick={handleCardClick}
                   clothingItems={clothingItems}
+                   onCardLike={handleCardLike}
                 />
               }
             />
@@ -246,6 +271,7 @@ closeActiveModal();
                   clothingItems={clothingItems}
                   handleCardClick={handleCardClick}
                   handleAddClick={handleAddClick}
+                  handleSignOut={handleSignOut}
                   />
                   </ProtectedRoutes>
               }
@@ -265,6 +291,8 @@ closeActiveModal();
           onDeleteClick={handleDeleteModalOpen}
           onClose={closeActiveModal}
           handleDeleteModalOpen={handleDeleteModalOpen}
+          onCardLike={handleCardLike}
+          
         />
         <DeleteModal
           isOpen={activeModal === "delete"}
