@@ -9,6 +9,7 @@ const ModalWithForm = ({
   onClose,
   children,
   onSubmit,
+  extraButton
 }) => {
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`} onClick={onClose}>
@@ -19,9 +20,12 @@ const ModalWithForm = ({
         </button>
         <form onSubmit={onSubmit} className="modal__form" name={name}>
           {children}
-          <button type="submit" className="modal__submit">
-            {buttonText}
-          </button>
+          <div className="modal__actions">
+            <button type="submit" className="modal__submit">
+              {buttonText}  {/* Sign Up */}
+            </button>
+            {extraButton && extraButton} {/* or Log In */}
+          </div>
         </form>
       </div>
     </div>

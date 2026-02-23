@@ -51,6 +51,10 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const openLoginModal = () => setActiveModal("login");
+const openRegisterModal = () => setActiveModal("register");
+const closeActiveModal = () => setActiveModal("");
   
 
 
@@ -178,7 +182,7 @@ closeActiveModal();
     if(!isLoggedIn) return;
     setActiveModal("profile change");
   }
-  const closeActiveModal = () => setActiveModal("");
+ 
 
   const onAddItem = (inputValues, resetForm) => {
     addItem({
@@ -272,6 +276,7 @@ const handleSignOut = () => {
                   handleCardClick={handleCardClick}
                   handleAddClick={handleAddClick}
                   handleSignOut={handleSignOut}
+                  isLoggedIn={isLoggedIn}
                   />
                   </ProtectedRoutes>
               }
@@ -305,11 +310,13 @@ const handleSignOut = () => {
           isOpen={activeModal === "register"}
           onClose={closeActiveModal}
           handleRegistration={handleRegistration}
+           onSwitchToLogin={openLoginModal}
         />
         <LoginModal
         isOpen={activeModal === "login"}
         onClose={closeActiveModal}
         handleLogin={handleLogin}
+       openRegisterModal={openRegisterModal}
         />
         <EditProfileModal
       isOpen={activeModal === "profile change"}

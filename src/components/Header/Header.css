@@ -20,6 +20,13 @@
   gap: 10px;
 }
 
+ .header__auth-btns button{
+  background: none;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .header__date-and-location {
   margin: 0;
 }
@@ -53,16 +60,17 @@
   cursor: pointer;
 }
 
-.header__avatar-placeholder {
-  width: 40px;               
-  height: 40px;           
-  border-radius: 50%;        
-  background-color: #ccc;   
-  color: #fff;               
-  display: flex;            
-  align-items: center;      
-  justify-content: center;   
-  font-weight: bold;        
-  font-size: 18px;          
+.header__avatar-placeholder,
+.header__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
   text-transform: uppercase;
 }

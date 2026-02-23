@@ -54,12 +54,12 @@ function Header({
             </NavLink>
           </>
         ) : (
-          <div className="header__auth-buttons">
+          <div className="header__auth-btns">
             <button type="button" onClick={openRegisterModal}>
               Sign Up
             </button>
-            <button type="button" onClick={openLoginModal}>
-              Sign In
+            <button  type="button" onClick={openLoginModal}>
+              Log In
             </button>
           </div>
         )}
