@@ -1,22 +1,62 @@
-.sidbar {
-  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+.sidebar {
+   font-family:
+ "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.sidebar__user-container {
+.sidebar__user-container{
+
+}
+
+.sidebar__user-info {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .sidebar__avatar {
+  width: 56px;
   height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .sidebar__username {
-  margin: 0;
-  line-height: 100%;
-  font-weight: 700;
   font-size: 20px;
-  line-height: 24px;
+  font-weight: 700;
+  padding-right: 16px;
+  width: 300px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #000;
+}
+
+.sidebar__editprofile {
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  padding-top: 24px;
+  background-color: transparent;
+  color: #000;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sidebar__signout {
+  padding: 8px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color:#000;
+  width: 100%;
+  text-align: left;
 }

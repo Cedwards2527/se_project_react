@@ -7,17 +7,17 @@ export default function Profile({
   handleCardClick,
   handleAddClick,
   isLoggedIn,
-  handleSignOut
+  handleSignOut,
+  onEditProfile
 }) {
   return (
     <section className="profile">
-      <SideBar />
+      <SideBar isLoggedIn={isLoggedIn} handleSignOut={handleSignOut} onEditProfile={onEditProfile} />
       <ClothesSection
         clothingItems={clothingItems}
         handleCardClick={handleCardClick}
         handleAddClick={handleAddClick}
       />
-     {isLoggedIn &&  <button onClick={handleSignOut}>Sign Out</button>}
     </section>
   );
 }

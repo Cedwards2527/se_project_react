@@ -41,7 +41,7 @@ export const filterWeatherData = (data) => {
   const dayOrNight = result.isDay ? "day" : "night";
   result.iconUrl =
     weatherOptions.find(
-      (w) => w.condition === result.condition && w.day === result.isDay,
+      (w) => w.condition === result.condition && w.day === result.isDay
     )?.url || defaultWeatherOptions[dayOrNight].url;
 
   return result;

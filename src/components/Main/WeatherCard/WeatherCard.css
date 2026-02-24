@@ -1,5 +1,6 @@
 .weather-card {
-  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+  font-family:
+    "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
   position: relative;
   display: flex;
   height: 80px;

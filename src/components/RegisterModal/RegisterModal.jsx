@@ -2,7 +2,12 @@ import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./RegisterModal.css";
 
-const RegisterModal = ({ isOpen, onClose, handleRegistration, onSwitchToLogin }) => {
+const RegisterModal = ({
+  isOpen,
+  onClose,
+  handleRegistration,
+  onSwitchToLogin,
+}) => {
   const [data, setData] = useState({
     email: "",
     name: "",
@@ -22,7 +27,7 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration, onSwitchToLogin })
     e.preventDefault();
     handleRegistration(data);
   };
-
+  const formIsValid = data.email && data.password;
   return (
     <ModalWithForm
       title="Sign Up"
@@ -31,10 +36,13 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration, onSwitchToLogin })
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onRegistration}
+      disabled={!formIsValid}
+      submitClassName="auth-modal__submit"
       extraButton={
         <button
           type="button"
           className="modal__switch"
+          disabled={!formIsValid}
           onClick={onSwitchToLogin}
         >
           or Log In

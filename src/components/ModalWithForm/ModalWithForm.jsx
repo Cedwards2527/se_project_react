@@ -4,12 +4,14 @@ import close from "../../assets/close.svg";
 const ModalWithForm = ({
   title,
   name,
-  buttonText = "Add garment",
+  buttonText = "Submit",
   isOpen,
   onClose,
   children,
   onSubmit,
-  extraButton
+  submitClassName = "modal__submit",
+  extraButton,
+  disabled,
 }) => {
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`} onClick={onClose}>
@@ -21,10 +23,14 @@ const ModalWithForm = ({
         <form onSubmit={onSubmit} className="modal__form" name={name}>
           {children}
           <div className="modal__actions">
-            <button type="submit" className="modal__submit">
-              {buttonText}  {/* Sign Up */}
+            <button
+              type="submit"
+              className={submitClassName}
+              disabled={disabled}
+            >
+              {buttonText}
             </button>
-            {extraButton && extraButton} {/* or Log In */}
+            {extraButton && extraButton}
           </div>
         </form>
       </div>

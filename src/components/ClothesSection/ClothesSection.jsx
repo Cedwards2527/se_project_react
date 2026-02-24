@@ -7,9 +7,11 @@ export default function ClothesSection({
   clothingItems,
   handleCardClick,
   handleAddClick,
-}) 
-{ const currentUser = useContext(CurrentUserContext);
-  const userItems = clothingItems.filter(item => item.owner === currentUser?._id);
+}) {
+  const currentUser = useContext(CurrentUserContext);
+  const userItems = clothingItems.filter(
+    (item) => item.owner === currentUser?._id
+  );
   return (
     <div className="clothes-section">
       <div className="clothes-section__row">

@@ -1,5 +1,6 @@
 .card {
-  font-family: "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
+  font-family:
+    "Cabinet Grotesk", "Inter", "Helvetica Neue", "Arial", sans-serif;
   width: 323px;
   position: relative;
   display: flex;

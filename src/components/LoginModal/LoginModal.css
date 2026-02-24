@@ -68,6 +68,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-top: 32px;
   font-size: 16px;
   line-height: 20px;
   font-weight: 700;
@@ -94,4 +95,12 @@
   background: none;
   color: rgba(0, 0, 0, 0.6);
   padding: 8px 16px;
+}
+.login-modal__error {
+  color: #FF4D00;
+  margin: 24px 0 32px 0;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  text-align: left;
 }

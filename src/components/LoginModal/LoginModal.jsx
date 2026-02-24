@@ -1,34 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { loginUser } from "../../utils/api";
+import "./LoginModal.css";
 
-const LoginModal = ({isOpen, onClose, handleLogin}) => {
-    const [data, setData] = useState({
-        email: "",
-    password: "",
-    });
+const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) => {
+  const [data, setData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-    const handleChange = (e) => {
-      const {name, value} = e.target;
-      setData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
+  
+  const [passwordLabel, setPasswordLabel] = useState("Password");
+
+  useEffect(() => {
+    if (!isOpen) {
+      setData({ email: "", password: "" });
+      setError("");
+      setPasswordLabel("Password");
     }
-    const onLogin = (e) => {
-        e.preventDefault();
-        handleLogin(data);
-    };
-    return(
+  }, [isOpen]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onLogin = (e) => {
+    e.preventDefault();
+
+    if (!data.password) {
+      setPasswordLabel("Incorrect password");
+      setError("Email or Password incorrect");
+      return;
+    } else {
+      setPasswordLabel("Password"); 
+    }
+
+    setError("");
+
+ loginUser({ email: data.email, password: data.password })
+  .then(() => {
+    handleLogin({ email: data.email, password: data.password });
+    onClose();
+  })
+  .catch((err) => {
+    const msg = err.message.toLowerCase();
+    if (msg.includes("password")) setPasswordLabel("Incorrect password");
+    setError(err.message);
+  });
+  };
+
+  const formIsValid = data.email && data.password;
+
+  return (
     <ModalWithForm
-     title="Log In"
+      title="Log In"
       name="login"
       buttonText="Log in"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onLogin}
+      disabled={!formIsValid}
+      submitClassName="auth-modal__submit"
+      extraButton={
+        <button
+          type="button"
+          className="modal__switch"
+          onClick={onSwitchToRegistration}
+        >
+          or Sign Up
+        </button>
+      }
     >
-        <label htmlFor="email">Email:</label>
+      <label htmlFor="email">Email</label>
       <input
+        className="modal__input"
         id="email"
         name="email"
         type="email"
@@ -36,8 +80,9 @@ const LoginModal = ({isOpen, onClose, handleLogin}) => {
         onChange={handleChange}
         required
       />
-       <label htmlFor="password">Password:</label>
+      <label htmlFor="password">{passwordLabel}</label>
       <input
+        className="modal__input"
         id="password"
         name="password"
         type="password"
@@ -45,7 +90,9 @@ const LoginModal = ({isOpen, onClose, handleLogin}) => {
         onChange={handleChange}
         required
       />
- </ModalWithForm>
+      {error && <div className="login-modal__error">{error}</div>}
+    </ModalWithForm>
   );
 };
- export default LoginModal;
+
+export default LoginModal;
