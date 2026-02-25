@@ -24,18 +24,7 @@ import {
   removeCardLike,
   addCardLike,
 } from "../../utils/api";
-
 import * as auth from "../../utils/auth";
-
-window.addEventListener("error", (e) => {
-  if (
-    e.filename?.includes("installHook.js") &&
-    e.message.includes("Unexpected token '<'")
-  ) {
-    e.stopImmediatePropagation();
-    return false;
-  }
-});
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -53,6 +42,7 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,6 +50,7 @@ function App() {
   const openLoginModal = () => setActiveModal("login");
   const openRegisterModal = () => setActiveModal("register");
   const closeActiveModal = () => setActiveModal("");
+
 
   const handleRegistration = ({ email, name, password, avatar }) => {
     auth
@@ -80,9 +71,8 @@ function App() {
   };
 
   const handleLogin = ({ email, password }) => {
-    if (!email || !password) {
-      return;
-    }
+    if (!email || !password) return;
+
     auth
       .authorize(email, password)
       .then((res) => {
@@ -123,29 +113,22 @@ function App() {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
+        (pos) =>
           fetchWeather({
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-          });
-        },
-        (err) => {
-          console.error("Geolocation error:", err);
-
-          fetchWeather({ latitude: 33.4271, longitude: -81.8627 });
-        }
+          }),
+        () => fetchWeather({ latitude: 33.4271, longitude: -81.8627 })
       );
     } else {
-      console.error("Geolocation not supported");
       fetchWeather({ latitude: 33.4271, longitude: -81.8627 });
     }
 
     getItems()
-      .then(({ data }) =>
-        setClothingItems(Array.isArray(data) ? data.reverse() : [])
-      )
+      .then(({ data }) => setClothingItems(Array.isArray(data) ? data.reverse() : []))
       .catch(console.error);
   }, []);
+
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -157,8 +140,7 @@ function App() {
         setCurrentUser(userData);
         setIsLoggedIn(true);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         localStorage.removeItem("jwt");
         setIsLoggedIn(false);
         setCurrentUser(null);
@@ -174,36 +156,34 @@ function App() {
   const handleToggleSwitchChange = () =>
     setCurrentTemperatureUnit((unit) => (unit === "F" ? "C" : "F"));
 
-  const handleAddClick = () => {
-    if (!isLoggedIn) return;
-    setActiveModal("add-garment");
-  };
-  const handleDeleteModalOpen = () => {
-    if (!isLoggedIn) return;
-    setActiveModal("delete");
-  };
+  const handleAddClick = () => isLoggedIn && setActiveModal("add-garment");
+  const handleDeleteModalOpen = () => isLoggedIn && setActiveModal("delete");
+  const handleEditProfileModalOpen = () => isLoggedIn && setActiveModal("profile change");
 
-  const handleEditProfileModalOpen = () => {
-    if (!isLoggedIn) return;
-    setActiveModal("profile change");
-  };
+  
+ const onAddItem = (inputValues, resetForm) => {
+  const token = localStorage.getItem("jwt");
+  if (!token) return;
 
-  const onAddItem = (inputValues, resetForm) => {
-    addItem(
-      {
-        name: inputValues.name,
-        imageUrl: inputValues.imageUrl,
-        weather: inputValues.weatherType,
-      },
-      localStorage.getItem("jwt")
-    )
-      .then((data) => {
-        setClothingItems([data, ...clothingItems]);
-        closeActiveModal();
-        resetForm();
-      })
-      .catch(console.error);
-  };
+  setIsLoading(true);
+
+  addItem(
+    {
+      name: inputValues.name,
+      imageUrl: inputValues.imageUrl,
+      weather: inputValues.weatherType,
+    },
+    token
+  )
+    .then((newItem) => {
+    
+      setClothingItems([newItem, ...clothingItems]);
+      closeActiveModal();
+      resetForm?.();
+    })
+    .catch((err) => console.error("Unable to add clothing:", err))
+    .finally(() => setIsLoading(false));
+};
 
   const handleDeleteItem = (itemID) => {
     deleteItems(itemID, localStorage.getItem("jwt"))
@@ -213,20 +193,18 @@ function App() {
       })
       .catch(console.error);
   };
+
   const handleCardLike = ({ id, isLiked }) => {
     const token = localStorage.getItem("jwt");
-
-    const request = isLiked
-      ? removeCardLike(id, token)
-      : addCardLike(id, token);
+    const request = isLiked ? removeCardLike(id, token) : addCardLike(id, token);
 
     request
       .then((updatedCard) => {
         setClothingItems((cards) =>
-          cards.map((item) => (item._id === id ? updatedCard : item))
+          cards.map((item) => (item._id === id ? updatedCard.data : item))
         );
       })
-      .catch((err) => console.log(err));
+      .catch(console.error);
   };
 
   const handleSignOut = () => {
@@ -236,10 +214,9 @@ function App() {
     navigate("/");
   };
 
+  
   useEffect(() => {
-    const handleEscape = (evt) => {
-      if (evt.key === "Escape") closeActiveModal();
-    };
+    const handleEscape = (evt) => evt.key === "Escape" && closeActiveModal();
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
@@ -255,8 +232,8 @@ function App() {
               handleAddClick={handleAddClick}
               weatherData={weatherData}
               isLoggedIn={isLoggedIn}
-              openRegisterModal={() => setActiveModal("register")}
-              openLoginModal={() => setActiveModal("login")}
+              openRegisterModal={openRegisterModal}
+              openLoginModal={openLoginModal}
             />
             <Routes>
               <Route
@@ -282,6 +259,7 @@ function App() {
                       handleSignOut={handleSignOut}
                       isLoggedIn={isLoggedIn}
                       onEditProfile={handleEditProfileModalOpen}
+                      onCardLike={handleCardLike}
                     />
                   </ProtectedRoutes>
                 }
@@ -289,11 +267,13 @@ function App() {
             </Routes>
           </div>
           <Footer />
+
           <AddItemModal
             buttonText="Add garment"
             isOpen={activeModal === "add-garment"}
             onClose={closeActiveModal}
             onAddItem={onAddItem}
+            isLoading={isLoading}
           />
           <ItemModal
             isOpen={activeModal === "preview"}
@@ -309,7 +289,6 @@ function App() {
             card={selectedCard}
             handleDeleteItem={handleDeleteItem}
           />
-
           <RegisterModal
             isOpen={activeModal === "register"}
             onClose={closeActiveModal}

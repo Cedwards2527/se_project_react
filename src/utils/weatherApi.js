@@ -1,6 +1,6 @@
 import { weatherOptions, defaultWeatherOptions } from "./constants";
 
-// Fetch weather safely
+
 export const getWeather = async ({ latitude, longitude }, apiKey) => {
   if (!apiKey) {
     console.error("OpenWeatherMap API key is missing!");
@@ -11,10 +11,10 @@ export const getWeather = async ({ latitude, longitude }, apiKey) => {
 
   try {
     const res = await fetch(url);
-    const text = await res.text(); // read as text first
+    const text = await res.text(); 
 
     try {
-      return JSON.parse(text); // attempt JSON parse
+      return JSON.parse(text);
     } catch {
       console.error("OpenWeatherMap returned invalid JSON:", text);
       return Promise.reject("Invalid JSON from OpenWeatherMap API");
@@ -25,7 +25,6 @@ export const getWeather = async ({ latitude, longitude }, apiKey) => {
   }
 };
 
-// Map API data to app-friendly format
 export const filterWeatherData = (data) => {
   const result = {};
   result.city = data.name;
@@ -37,7 +36,6 @@ export const filterWeatherData = (data) => {
   result.condition = data.weather[0].main.toLowerCase();
   result.isDay = isDay(data.sys, Date.now());
 
-  // Set icon URL safely
   const dayOrNight = result.isDay ? "day" : "night";
   result.iconUrl =
     weatherOptions.find(
@@ -47,7 +45,7 @@ export const filterWeatherData = (data) => {
   return result;
 };
 
-// Helpers
+
 const isDay = ({ sunrise, sunset }) => {
   const now = Date.now();
   return sunrise * 1000 < now && now < sunset * 1000;

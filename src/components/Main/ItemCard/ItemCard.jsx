@@ -2,6 +2,7 @@ import "./ItemCard.css";
 import { useContext } from "react";
 import CurrentUserContext from "../../../context/CurrentUserContext";
 
+
 function ItemCard({ item, onCardClick, onCardLike }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -26,7 +27,7 @@ function ItemCard({ item, onCardClick, onCardLike }) {
       />
       {currentUser && (
         <button className={itemLikeButtonClassName} onClick={handleLike}>
-          Like
+        
         </button>
       )}
     </li>

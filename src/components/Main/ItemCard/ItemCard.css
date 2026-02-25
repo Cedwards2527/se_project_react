@@ -28,3 +28,26 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+.card__like-button{
+  position: absolute;
+  background-image: url(../../../assets/like.svg);
+  background-color: transparent;
+  width: 20px;
+  height: 17px;
+  border: 2px;
+ top: 20px;
+ right: 108px;
+}
+
+.card__like-button_active{
+   position: absolute;
+  background-image: url(../../../assets/like-active.svg);
+  background-color: transparent;
+  width: 20px;
+  height: 17px;
+  border: 2px;
+ top: 20px;
+ right: 108px;
+
+}
