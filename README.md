@@ -41,4 +41,4 @@ project and some challenges I faced while building it.
 
 ## Backend
 
-The backend repository for this project can be found here: [Backend Repo](git@github.com:Cedwards2527/se_project_express.git)
+The backend repository for this project can be found here: [Backend Repo](https://github.com/Cedwards2527/se_project_express)

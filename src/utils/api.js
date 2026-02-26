@@ -4,7 +4,7 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const handleServerResponse = (res) => {
+export const handleServerResponse = (res) => {
   if (res.ok) {
     return res.json();
   }

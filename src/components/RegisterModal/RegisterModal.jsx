@@ -42,7 +42,6 @@ const RegisterModal = ({
         <button
           type="button"
           className="modal__switch"
-          disabled={!formIsValid}
           onClick={onSwitchToLogin}
         >
           or Log In
@@ -52,7 +51,7 @@ const RegisterModal = ({
       <label htmlFor="email">Email*</label>
       <input
         className="modal__input"
-        id="email"
+        id="register-email"
         name="email"
         type="email"
         placeholder="Email"
@@ -64,7 +63,7 @@ const RegisterModal = ({
       <label htmlFor="password">Password*</label>
       <input
         className="modal__input"
-        id="password"
+        id="register-password"
         name="password"
         type="password"
         placeholder="Password"
