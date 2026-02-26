@@ -73,7 +73,7 @@ const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) =>
       <label htmlFor="email">Email</label>
       <input
         className="modal__input"
-        id="email"
+        id="login-email"
         name="email"
         type="email"
         value={data.email}
@@ -83,7 +83,7 @@ const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) =>
       <label htmlFor="password">{passwordLabel}</label>
       <input
         className="modal__input"
-        id="password"
+        id="login-password"
         name="password"
         type="password"
         value={data.password}

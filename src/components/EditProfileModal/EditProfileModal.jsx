@@ -44,7 +44,7 @@ const EditProfileModal = ({ isOpen, onClose, onUpdateUser }) => {
       <label htmlFor="name">Name*</label>
       <input
        className="modal__input"
-        id="name"
+        id="edit-name"
         name="name"
         type="text"
         placeholder="Avatar URL"
@@ -55,7 +55,7 @@ const EditProfileModal = ({ isOpen, onClose, onUpdateUser }) => {
       <label htmlFor="avatar">Avatar URL*</label>
       <input
        className="modal__input"
-        id="avatar"
+        id="edit-avatar"
         name="avatar"
         type="url"
         placeholder="Avatar URL"
