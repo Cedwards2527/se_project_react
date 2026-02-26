@@ -130,7 +130,7 @@ function App() {
         localStorage.removeItem("jwt");
         setIsLoggedIn(false);
         setCurrentUser(null);
-        navigate("/login");
+        navigate("/");
       });
   }, [navigate]);
 
