@@ -7,8 +7,19 @@
   justify-content: center;
 }
 
+.card__header {
+   position: absolute;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  top: 15px;
+  left: 12px;
+  right: 12px;
+  
+}
+
 .card__name {
-  position: absolute;
   top: 15px;
   margin: 0;
   color: rgba(0, 0, 0, 0.6);
@@ -30,24 +41,20 @@
 }
 
 .card__like-button{
-  position: absolute;
+  position: relative;
   background-image: url(../../../assets/like.svg);
   background-color: transparent;
   width: 20px;
   height: 17px;
   border: 2px;
- top: 20px;
- right: 108px;
+ 
 }
 
 .card__like-button_active{
-   position: absolute;
+   position: relative;
   background-image: url(../../../assets/like-active.svg);
   background-color: transparent;
   width: 20px;
   height: 17px;
   border: 2px;
- top: 20px;
- right: 108px;
-
 }

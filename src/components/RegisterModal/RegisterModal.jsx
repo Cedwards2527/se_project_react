@@ -27,7 +27,7 @@ const RegisterModal = ({
     e.preventDefault();
     handleRegistration(data);
   };
-  const formIsValid = data.email && data.password;
+  const formIsValid = data.email && data.password && data.name;
   return (
     <ModalWithForm
       title="Sign Up"

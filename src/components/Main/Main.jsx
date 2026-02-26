@@ -2,15 +2,19 @@ import { useContext } from "react";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import ItemCard from "./ItemCard/ItemCard";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
+import CurrentUserContext from "../../context/CurrentUserContext";
 import "./Main.css";
 
 function Main({ weatherData, handleCardClick, clothingItems, onCardLike }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const currentUser = useContext(CurrentUserContext);
 
-  const filteredItems = clothingItems.filter(
-    (item) =>
-      item?.weather === "hot" || item?.weather === "warm" || item?.weather === "cold"
-  ).filter(item => item.weather === weatherData.type);
+  const filteredItems = clothingItems.filter(item => {
+    const ownerMatch = typeof item.owner === "string"
+      ? item.owner === currentUser?._id
+      : item.owner?._id === currentUser?._id;
+    return ownerMatch && item.weather === weatherData.type;
+  });
 
   return (
     <main className="main">

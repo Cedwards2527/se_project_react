@@ -9,12 +9,19 @@ export default function SideBar({ isLoggedIn, handleSignOut, onEditProfile }) {
     <aside className="sidebar">
       <div className="sidebar__user-container">
         <div className="sidebar__user-info">
-          <img
-            src={currentUser?.avatar || "/default-avatar.png"}
-            alt="user avatar"
-            className="sidebar__avatar"
-          />
-          <p className="sidebar__username">{currentUser?.name || "No Name"}</p>
+          {currentUser?.avatar ? (
+            <img
+              src={currentUser?.avatar}
+              alt="user avatar"
+              className="sidebar__avatar"
+            />
+          ) : (
+            <div className="header__avatar-placeholder">
+              {currentUser?.name?.[0]?.toUpperCase()}
+            </div>
+          )}
+
+          <p className="sidebar__username">{currentUser?.name}</p>
         </div>
 
         {isLoggedIn && (

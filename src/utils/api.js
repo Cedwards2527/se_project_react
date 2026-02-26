@@ -5,9 +5,10 @@ const headers = {
 };
 
 const handleServerResponse = (res) => {
-  if (res.ok) 
-  return res.json();
- return res.json().then((data) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return res.json().then((data) => {
     const errMsg = data?.message || `Error: ${res.status}`;
     return Promise.reject(new Error(errMsg));
   });

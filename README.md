@@ -38,3 +38,7 @@ I built this project during my software engineering bootcamp as a way to practic
 
 Check out [this video](https://drive.google.com/file/d/1hKrmsVLkcc6-uekE0fOWdf2gWtk1UJHZ/view?usp=drive_link), where I describe my
 project and some challenges I faced while building it.
+
+## Backend
+
+The backend repository for this project can be found here: [Backend Repo](git@github.com:Cedwards2527/se_project_express.git)
