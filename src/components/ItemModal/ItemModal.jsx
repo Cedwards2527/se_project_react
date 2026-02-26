@@ -5,7 +5,10 @@ import close from "../../assets/close-white.svg";
 
 function ItemModal({ isOpen, onClose, card, handleDeleteModalOpen }) {
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner === currentUser?._id;
+  const isOwn =
+    typeof card.owner === "string"
+      ? card.owner === currentUser?._id
+      : card.owner?._id === currentUser?._id;
 
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`} onClick={onClose}>
