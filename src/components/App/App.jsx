@@ -43,7 +43,7 @@ function App() {
   const closeActiveModal = () => setActiveModal("");
 
   const handleRegistration = ({ email, name, password, avatar }) => {
-    auth.register(name, avatar, email, password)
+    return auth.register(name, avatar, email, password)
       .then(() => auth.authorize(email, password))
       .then(res => {
         localStorage.setItem("jwt", res.token);
@@ -55,13 +55,12 @@ function App() {
         closeActiveModal();
         const redirectPath = location.state?.pathname || "/";
         navigate(redirectPath);
-      })
-      .catch(console.error);
+      });
   };
 
   const handleLogin = ({ email, password }) => {
-    if (!email || !password) return;
-    auth.authorize(email, password)
+    if (!email || !password) return Promise.reject(new Error("Email and password are required"));
+    return auth.authorize(email, password)
       .then(res => {
         localStorage.setItem("jwt", res.token);
         return auth.checkToken(res.token);
@@ -72,8 +71,7 @@ function App() {
         closeActiveModal();
         const redirectPath = location.state?.pathname || "/";
         navigate(redirectPath);
-      })
-      .catch(console.error);
+      });
   };
 
   const onProfileEdit = (inputValues) => {
@@ -149,14 +147,13 @@ function App() {
 
   const onAddItem = (inputValues, resetForm) => {
     const token = localStorage.getItem("jwt");
-    if (!token) return;
-    addItem({ name: inputValues.name, imageUrl: inputValues.imageUrl, weather: inputValues.weatherType }, token)
+    if (!token) return Promise.reject(new Error("Authentication required"));
+    return addItem({ name: inputValues.name, imageUrl: inputValues.imageUrl, weather: inputValues.weatherType }, token)
       .then(newItem => {
         setClothingItems(prev => [newItem, ...prev]);
         closeActiveModal();
         resetForm?.();
-      })
-      .catch(console.error);
+      });
   };
 
   const handleDeleteItem = (itemID) => {

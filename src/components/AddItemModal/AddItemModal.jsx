@@ -1,16 +1,29 @@
+import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useForm } from "../../hooks/useForm";
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
+  const [error, setError] = useState("");
   const defaultValues = {
     name: "",
     imageUrl: "",
     weatherType: "",
   };
   const { values, handleChange, resetForm } = useForm(defaultValues);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setError("");
+    }
+  }, [isOpen]);
+
   function handleSubmit(evt) {
     evt.preventDefault();
-    onAddItem(values, resetForm);
+    setError("");
+    onAddItem(values, resetForm)
+      .catch((err) => {
+        setError(err.message);
+      });
   }
 
   return (
@@ -92,6 +105,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
           Cold
         </label>
       </fieldset>
+      {error && <div className="login-modal__error">{error}</div>}
     </ModalWithForm>
   );
 };

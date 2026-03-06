@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./RegisterModal.css";
 
@@ -14,6 +14,13 @@ const RegisterModal = ({
     password: "",
     avatar: "",
   });
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isOpen) {
+      setError("");
+    }
+  }, [isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +32,11 @@ const RegisterModal = ({
 
   const onRegistration = (e) => {
     e.preventDefault();
-    handleRegistration(data);
+    setError("");
+    handleRegistration(data)
+      .catch((err) => {
+        setError(err.message);
+      });
   };
   const formIsValid = data.email && data.password && data.name;
   return (
@@ -48,7 +59,7 @@ const RegisterModal = ({
         </button>
       }
     >
-      <label htmlFor="email">Email*</label>
+      <label htmlFor="register-email">Email*</label>
       <input
         className="modal__input"
         id="register-email"
@@ -60,7 +71,7 @@ const RegisterModal = ({
         required
       />
 
-      <label htmlFor="password">Password*</label>
+      <label htmlFor="register-password">Password*</label>
       <input
         className="modal__input"
         id="register-password"
@@ -72,10 +83,10 @@ const RegisterModal = ({
         required
       />
 
-      <label htmlFor="name">Name*</label>
+      <label htmlFor="register-name">Name*</label>
       <input
         className="modal__input"
-        id="name"
+        id="register-name"
         name="name"
         type="text"
         placeholder="Name"
@@ -84,16 +95,17 @@ const RegisterModal = ({
         required
       />
 
-      <label htmlFor="avatar">Avatar URL</label>
+      <label htmlFor="register-avatar">Avatar URL</label>
       <input
         className="modal__input"
-        id="avatar"
+        id="register-avatar"
         name="avatar"
         type="url"
         placeholder="Avatar URL"
         value={data.avatar}
         onChange={handleChange}
       />
+      {error && <div className="login-modal__error">{error}</div>}
     </ModalWithForm>
   );
 };

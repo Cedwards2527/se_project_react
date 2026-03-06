@@ -6,4 +6,12 @@
   border-bottom: 1px solid #000;
   font-size: 16px;
   box-sizing: border-box;
+  color: #000;
+  background-color: transparent;
+  font-family: inherit;
+}
+
+.modal__input:focus {
+  outline: none;
+  border-bottom: 2px solid #000;
 }

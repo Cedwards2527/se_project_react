@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { loginUser } from "../../utils/api";
 import "./LoginModal.css";
 
 const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) => {
@@ -35,17 +34,12 @@ const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) =>
     }
 
     setError("");
-
- loginUser({ email: data.email, password: data.password })
-  .then(() => {
-    handleLogin({ email: data.email, password: data.password });
-    onClose();
-  })
-  .catch((err) => {
-    const msg = err.message.toLowerCase();
-    if (msg.includes("password")) setPasswordLabel("Incorrect password");
-    setError(err.message);
-  });
+    handleLogin({ email: data.email, password: data.password })
+      .catch((err) => {
+        const msg = err.message.toLowerCase();
+        if (msg.includes("password")) setPasswordLabel("Incorrect password");
+        setError(err.message);
+      });
   };
 
   const formIsValid = data.email && data.password;
@@ -70,7 +64,7 @@ const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) =>
         </button>
       }
     >
-      <label htmlFor="email">Email</label>
+      <label htmlFor="login-email">Email</label>
       <input
         className="modal__input"
         id="login-email"
@@ -80,7 +74,7 @@ const LoginModal = ({ isOpen, onClose, handleLogin, onSwitchToRegistration }) =>
         onChange={handleChange}
         required
       />
-      <label htmlFor="password">{passwordLabel}</label>
+      <label htmlFor="login-password">{passwordLabel}</label>
       <input
         className="modal__input"
         id="login-password"
