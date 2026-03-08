@@ -1,5 +1,5 @@
 import { handleServerResponse } from "./api";
-const BASE_URL = "http://localhost:3001";
+import { BASE_URL } from "./constants";
 
 
 export const register = (name, avatar, email, password) => {
