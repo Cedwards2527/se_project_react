@@ -27,8 +27,11 @@ export const authorize = (email, password) => {
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
+    cache: "no-store",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Pragma: "no-cache",
       authorization: `Bearer ${token}`,
     },
   }).then(handleServerResponse);
