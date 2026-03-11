@@ -5,9 +5,6 @@ const headers = {
 };
 
 export const handleServerResponse = (res) => {
-    if (res.status === 304) {
-    return Promise.reject(new Error("Auth cache hit (304), retry without cache"));
-  }
   if (res.ok) {
     return res.json();
   }
