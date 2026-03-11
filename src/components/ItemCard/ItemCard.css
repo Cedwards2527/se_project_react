@@ -42,7 +42,10 @@
 
 .card__like-button{
   position: relative;
-  background-image: url(../../../assets/like.svg);
+  background-image: url(../../assets/like.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   background-color: transparent;
   width: 20px;
   height: 17px;
@@ -52,7 +55,7 @@
 
 .card__like-button_active{
    position: relative;
-  background-image: url(../../../assets/like-active.svg);
+  background-image: url(../../assets/like-active.svg);
   background-color: transparent;
   width: 20px;
   height: 17px;

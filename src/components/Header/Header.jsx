@@ -17,6 +17,7 @@ function Header({
     day: "numeric",
   });
   const currentUser = useContext(CurrentUserContext);
+  console.log('Header currentUser:', currentUser);
   return (
     <header className="header">
       <NavLink to="/">
@@ -47,7 +48,7 @@ function Header({
                   />
                 ) : (
                   <div className="header__avatar-placeholder">
-                    {currentUser?.name[0].toUpperCase()}
+                    {currentUser?.name?.[0]?.toUpperCase()}
                   </div>
                 )}
               </div>
