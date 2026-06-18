@@ -1,6 +1,7 @@
-export const BASE_URL = import.meta.env.MODE === "production" 
-  ? "https://api.cedwards-wtwr.sundby.com"
-  : "http://localhost:3001";
+export const BASE_URL =
+  import.meta.env.MODE === "production"
+    ? "https://wtwr-backend-8zq1.onrender.com"
+    : "http://localhost:3001";
 
 
 
